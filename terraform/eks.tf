@@ -21,6 +21,10 @@ module "eks" {
 
       disk_size = 20
 
+      iam_role_additional_policies = {
+        AmazonEC2ContainerRegistryReadOnly = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+      }
+
       labels = {
         role = "weather-app"
       }
