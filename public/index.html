@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Johntoby Weather App</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        input, button { padding: 10px; margin: 5px; font-size: 16px; }
+        #result { margin-top: 20px; padding: 15px; border-radius: 5px; }
+        .weather { background: #e8f5e8; border: 1px solid #4caf50; }
+        .error { background: #ffe8e8; border: 1px solid #f44336; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Johntoby's Weather App</h1>
+    <input type="text" id="cityInput" placeholder="Enter city name" />
+    <button onclick="getWeather()">Get Weather</button>
+    <div id="result"></div>
+
+    <script>
+        async function getWeather() {
+            const city = document.getElementById('cityInput').value.trim();
+            const result = document.getElementById('result');
+            
+            if (!city) {
+                result.innerHTML = '<div class="error">Please enter a city name</div>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/weather/${city}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    result.innerHTML = `
+                        <div class="weather">
+                            <h3>${data.city}</h3>
+                            <p>Temperature: ${data.temperature}°C</p>
+                            <p>Condition: ${data.description}</p>
+                            <p>Humidity: ${data.humidity}%</p>
+                        </div>
+                    `;
+                } else {
+                    result.innerHTML = `<div class="error">${data.error}</div>`;
+                }
+            } catch (error) {
+                result.innerHTML = '<div class="error">Failed to fetch weather data</div>';
+            }
+        }
+
+        document.getElementById('cityInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') getWeather();
+        });
+    </script>
+</body>
+</html>
