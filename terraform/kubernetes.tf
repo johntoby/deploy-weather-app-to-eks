@@ -5,6 +5,8 @@ resource "kubernetes_namespace" "weather_app" {
 }
 
 resource "kubernetes_deployment" "weather_app" {
+  depends_on = [aws_ecr_repository.weather_app]
+  
   metadata {
     name      = "weather-app"
     namespace = kubernetes_namespace.weather_app.metadata[0].name
@@ -33,6 +35,7 @@ resource "kubernetes_deployment" "weather_app" {
         container {
           image = "${aws_ecr_repository.weather_app.repository_url}:latest"
           name  = "weather-app"
+          image_pull_policy = "Always"
 
           port {
             container_port = 4000

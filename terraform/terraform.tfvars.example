@@ -1,5 +1,5 @@
 aws_region         = "us-west-2"
-cluster_version     = "1.30"
+cluster_version     = "1.32"
 node_instance_type  = "t2.medium"
 desired_capacity    = 2
 max_capacity        = 4
